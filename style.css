@@ -37,3 +37,15 @@ div.gamePad {
     justify-content: center;
     align-items: center;
 }
+
+div#buttons {
+    display: flex;
+    justify-content: center;
+    padding: 1rem
+}
+
+button {
+    margin: 0rem 0.5rem;
+    font-size: 1.4rem;
+    padding: 0.4rem
+}

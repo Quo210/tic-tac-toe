@@ -11,6 +11,13 @@ const boardModule = ( function() {
         [0,4,8],
         [2,4,6]
     ];
+    let currentSymbol = '';
+    
+    function symbolSelection() {
+        return (currentSymbol == 'X')?
+        currentSymbol = 'O':
+        currentSymbol = 'X';
+    }
 
     function generateBoard() {
         for (let i = 0;i < 9; i++) {
@@ -20,7 +27,6 @@ const boardModule = ( function() {
             newP.setAttribute('id',`para${i}`)
             newDiv.classList.add('gamePad');
             newP.classList.add('gameText');
-            newDiv.addEventListener('click',drawOnBoard)
             newDiv.appendChild(newP)
             boardDiv.appendChild(newDiv)
         }
@@ -28,12 +34,12 @@ const boardModule = ( function() {
     }
 
     function currentTexts() {
-        const textArray =  Array.from( document.querySelectorAll('p.gameText') )
-        return textArray;
+        return Array.from( document.querySelectorAll('p.gameText') )
+        
     }
 
     function currentDivs() {
-        const padArray = Array.from( document.querySelectorAll('div.gamePad') )
+        return Array.from( document.querySelectorAll('div.gamePad') )
     }
 
     function setSymbols() {
@@ -49,16 +55,24 @@ const boardModule = ( function() {
         })
         myBoard = emptyArr;
         setSymbols()
-        playerModule.reset()
+        playModule.reset()
+        grantDrawListeners()
     }
 
     function drawOnBoard() {
-        const x = 'x';
+        const x = symbolSelection();
         const that = this.firstChild;
         const index = obtainID(that)
         that.textContent = x;
         myBoard[index] = x;
-        playerModule.store(index);
+
+        if (x == 'X') {
+            playModule.store(index,playModule.player())
+        } else {
+            playModule.store(index,playModule.computer())
+        };
+
+        this.removeEventListener('click',drawOnBoard)
     }
 
     function obtainID(that) {
@@ -73,17 +87,31 @@ const boardModule = ( function() {
         return myBoard
     }
 
+    function grantDrawListeners() {
+        const myPads = currentDivs();
+        myPads.forEach(element => {
+            element.addEventListener('click',drawOnBoard)
+        })
+    }
+
+    function look4Winner(){
+        
+    }
+
     return {
         genBoard: generateBoard,
         symbols: setSymbols,
         reset: reset,
-        check: seeBoardArray,    
+        check: seeBoardArray,
+        listen: grantDrawListeners,
+        test: look4Winner,
     }
 
 })();
 
-const playerModule = ( () => {
-    let played = [];
+const playModule = ( () => {
+    let playerScore = [];
+    let computerScore = [];
     
     function playerFactory(name = 'Player', marker = 'x', gender = 'Apache', age = '?') {
         return {
@@ -94,22 +122,35 @@ const playerModule = ( () => {
         }
     }
 
-    function storePlays(numb) {
-        played.push(numb)
-        console.log(played)
+    function storePlays(numb,target) {
+        let whoPlayed = target;
+        whoPlayed.push(numb)
+        console.log(whoPlayed)
     }
 
-    function resetPlayer() {
-        while (played.length != 0) {
-            played.pop()
+    function resetScores() {
+        while (playerScore.length != 0 || computerScore.length != 0) {
+            playerScore.pop()
+            computerScore.pop()
         }
-        console.log(played)
+        console.log(playerScore,computerScore)
     } 
+
+    function checkCompScore(){
+        return computerScore;
+    }
+
+    function checkPlayerScore(){
+        return playerScore;
+    }
 
 
     return {
         store: storePlays,
-        reset: resetPlayer,
+        reset: resetScores,
+        player: checkPlayerScore,
+        computer: checkCompScore,
+
     }
 
 })();
@@ -129,4 +170,5 @@ const buttonsModule = ( () => {
 
 boardModule.genBoard();
 boardModule.symbols();
+boardModule.listen();
 buttonsModule.reset();

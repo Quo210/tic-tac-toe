@@ -42,3 +42,12 @@ LOG_2 15/08/21 21:23PM
 - Created the buttonModule
 - Fixed several bugs that conflicted to identify source of clicks
 - playerModule now has an array that stores the positions that were played, hope to use for winCon.
+
+LOG_3 16/08/21 19:30pm
+
+- Created logic that alternates symbol to be played by the user.
+- Disabled box after inputing one play
+- Reset renables all boxes
+- Learned: Arrays can be compared directly with Arrays because JS uses their internal reference, not their actual content. 
+- Some functions have been split to make it more modular.
+
