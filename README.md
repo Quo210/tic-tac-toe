@@ -19,7 +19,7 @@ One of the main objetives of this project is learning to use 'Modular' writing i
 
 CHANGELOG --
 
-# 1 15/08/21 00:09pm
+LOG_1 15/08/21 00:09pm
 
 - Added first lines of code for the HTML and the JS
 - Created first lines of modules
@@ -29,3 +29,16 @@ CHANGELOG --
 - Player Module has
 -- Player Factory function that generates an object with the information of the player, which can be passed as arguments but in the case nothing is passed it generates one automacally based on a template.
 - Changed looks of base document to be dark mode. 
+
+LOG_2 15/08/21 21:23PM
+
+- Created a board display to start working
+- Created functions that reset board display and board array
+- Created function that translates current board array to board display
+- Created function that adds 'x' upon click
+- Created button that resets board
+- Changed listener from 'p' to use 'div' as it is larger
+- Added possible sketch to check winCon
+- Created the buttonModule
+- Fixed several bugs that conflicted to identify source of clicks
+- playerModule now has an array that stores the positions that were played, hope to use for winCon.

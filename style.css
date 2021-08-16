@@ -1,3 +1,9 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     background: black;
     color: white;
@@ -5,5 +11,29 @@ body {
 }
 
 p {
-    font-size: 2.0rem;
+    font-size: 3.0rem;
+    font-family: monospace;
+    width: 100%;
+    line-height: 100%;
+    text-align: center;
+}
+
+div#board {
+    background-color: gray;
+    border: blue 1px solid;
+    height: 75vw;
+    max-height: 75vw;
+    width: 75vw;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1rem 1rem;
+}
+
+div.gamePad {
+    display: flex;
+    background-color: cornflowerblue;
+    justify-content: center;
+    align-items: center;
 }
