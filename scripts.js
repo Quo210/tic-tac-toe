@@ -1,5 +1,5 @@
 const boardModule = ( function() {
-    let myBoard = ['x','x','x','o','o','o','x','x','x'];
+    let myBoard = ['','','','','','','','',''];
     const boardDiv = document.querySelector('div#board'); 
     const winCondition = [
         [0,1,2],
@@ -12,6 +12,7 @@ const boardModule = ( function() {
         [2,4,6]
     ];
     let currentSymbol = '';
+    let playsCounter = 0;
     
     function symbolSelection() {
         return (currentSymbol == 'X')?
@@ -55,7 +56,9 @@ const boardModule = ( function() {
         })
         myBoard = emptyArr;
         setSymbols()
-        playModule.reset()
+        playsCounter = 0;
+        counterHandler();
+        currentSymbol = '';
         grantDrawListeners()
     }
 
@@ -66,13 +69,14 @@ const boardModule = ( function() {
         that.textContent = x;
         myBoard[index] = x;
 
-        if (x == 'X') {
-            playModule.store(index,playModule.player())
-        } else {
-            playModule.store(index,playModule.computer())
-        };
-
+        playsCounter++
+        counterHandler()
+        turnInformer()
         this.removeEventListener('click',drawOnBoard)
+
+        if(playsCounter >= 5) {
+            look4Winner()
+        }
     }
 
     function obtainID(that) {
@@ -94,8 +98,54 @@ const boardModule = ( function() {
         })
     }
 
+    function removeDrawListeners() {
+        const myPads = currentDivs();
+        myPads.forEach(element => {
+            element.removeEventListener('click',drawOnBoard)
+        })
+    }
+
     function look4Winner(){
+        let winnerSymbol;
+
+        for (let array of winCondition) {
+            const check = exploreBoard(array)
+            if (check === true) {
+                let board = seeBoardArray();
+                winnerSymbol = board[array[0]];
+                setTimeout(() => {alert(`${winnerSymbol} is the winner!`)},200)
+                removeDrawListeners() 
+                return
+            } else { continue }
+        }
+    }
+
+    function exploreBoard(sequence){
+        const first = sequence[0];
+        const second = sequence [1];
+        const third = sequence[2];
+        const board = seeBoardArray();
         
+        if (board[first] === '') {
+            return
+        }
+
+        if (board[first] === board[second] && board[first] === board[third]) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    function counterHandler(){
+        const counter = document.querySelector('div#counter');
+        counter.textContent = `Plays: ${playsCounter}`;
+    }
+
+    function turnInformer(){
+        const turn = document.querySelector('div#turn');
+        const nextTurn = (currentSymbol === 'X')? 'O':'X'; 
+        turn.textContent = `Next Play: ${nextTurn}`
     }
 
     return {
@@ -109,48 +159,56 @@ const boardModule = ( function() {
 
 })();
 
-const playModule = ( () => {
-    let playerScore = [];
-    let computerScore = [];
+const playerModule = ( () => {
+    let crossPlayer;
+    let circlePlayer;
     
-    function playerFactory(name = 'Player', marker = 'x', gender = 'Apache', age = '?') {
+    function playerFactory(name,mark) {
         return {
             name: name,
-            mark: marker,
-            gender: gender,
-            age: age,
+            symbol: mark,
+            score: 0,
         }
-    }
+    };
 
-    function storePlays(numb,target) {
-        let whoPlayed = target;
-        whoPlayed.push(numb)
-        console.log(whoPlayed)
-    }
-
-    function resetScores() {
-        while (playerScore.length != 0 || computerScore.length != 0) {
-            playerScore.pop()
-            computerScore.pop()
+    function createPlayer(){
+        const input = this.previousSibling.previousSibling.previousSibling.previousSibling;
+        const parent = input.parentElement;
+        let userName = input.value;
+        let userMark;
+        
+        let provisionalName = () => {
+            return (crossPlayer === undefined)? 
+            'Cross Player':
+            'Circle Player';
         }
-        console.log(playerScore,computerScore)
-    } 
 
-    function checkCompScore(){
-        return computerScore;
-    }
+        if(userName == '') { userName = provisionalName()}
 
-    function checkPlayerScore(){
-        return playerScore;
+
+        if (crossPlayer == undefined) {
+            userMark = 'X'
+            crossPlayer = playerFactory(userName,userMark);
+            console.log(crossPlayer)
+        } else {
+            userMark = 'O'
+            circlePlayer = playerFactory(userName,userMark)
+            console.log(circlePlayer)
+        }
+
+
+        let newName = document.createElement('p');
+        newName.classList.add('username')
+        newName.textContent = userName; 
+        input.after(newName)
+        parent.removeChild(input);
+
+        playerFactory(userName,userMark)
     }
 
 
     return {
-        store: storePlays,
-        reset: resetScores,
-        player: checkPlayerScore,
-        computer: checkCompScore,
-
+        add: createPlayer,
     }
 
 })();
@@ -162,8 +220,21 @@ const buttonsModule = ( () => {
         btn.addEventListener('click', boardModule.reset)
     }
 
+    function createPlayersBTN() {
+        const playerButtons = Array.from( document.querySelectorAll('div.player > button') )
+        for (let element of playerButtons) {
+            element.addEventListener('click',playerModule.add)
+        }
+
+    }
+
+    function globalListenerSetter() {
+        resetBTN()
+        createPlayersBTN()
+    }
+
     return {
-        reset: resetBTN,
+        listen: globalListenerSetter,
     }
 })();
 
@@ -171,4 +242,4 @@ const buttonsModule = ( () => {
 boardModule.genBoard();
 boardModule.symbols();
 boardModule.listen();
-buttonsModule.reset();
+buttonsModule.listen();

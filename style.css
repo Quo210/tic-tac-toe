@@ -36,6 +36,7 @@ div.gamePad {
     background-color: cornflowerblue;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 div#buttons {
@@ -48,4 +49,43 @@ button {
     margin: 0rem 0.5rem;
     font-size: 1.4rem;
     padding: 0.4rem
+}
+
+.informer {
+    font-size: 2.2rem;
+    text-align: center;
+}
+
+div#mode {
+    text-align: center;
+    margin: 1rem auto;
+    padding: 1rem;
+}
+
+div#mode > button {
+    margin: 0.5rem;
+}
+
+div#players {
+    display: grid;
+    height: 40vh;
+    grid-template-columns: 50% auto;
+    grid-template-rows: 20% auto;
+}
+
+div#players > p {
+    grid-row: 1/2;
+    grid-column: span 2;
+    display: block;
+    margin: auto;
+    font-size: 2rem;
+}
+
+div.player {
+    grid-row: 2/3;
+}
+
+.username {
+    color: red;
+    font-size: 1.8rem;
 }

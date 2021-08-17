@@ -51,3 +51,10 @@ LOG_3 16/08/21 19:30pm
 - Learned: Arrays can be compared directly with Arrays because JS uses their internal reference, not their actual content. 
 - Some functions have been split to make it more modular.
 
+LOG_4 17/08/21 14:30PM
+
+- Created logic that checks for WinCondition using the board array and iterating over it with the winning sequences. It dynamically adapts a custom message for the winner.
+- Refined playerModule to better reflect new aproach
+- Deleted several functions in boardModule and playerModule that no longer serve a purpose
+- Created the logic and added the visual support to show number of rounds plays made, what is going to be the next symbol when clicked and a basic interface for Player1 and 2 with option for inputed name.
+- Added basic CSS to accomodate new elements while the project isn't ready.
