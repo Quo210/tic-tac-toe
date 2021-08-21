@@ -8,34 +8,43 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="header">
+        <h1 id="title">Tic-Tac-Toe</h1>
+        <h4>For 'The Odin Project'</h4>
+    </div>
+    
     <div id="board">
         
     </div>
 
-    <div id="buttons">
-        <button id="reset">Reset</button>
+    <div id="buttons" class="betterbg1">
+        <button id="reset">Reset Game</button>
         <!-- <button id="X">Play: X</button>
         <button id="id">Play: O</button> -->
     </div>
-    <div id="counter" class="informer">Plays: 0</div>
+    <div id="informers" class="betterbg1">
+        <div id="counter" class="informer">Plays: 0</div>
     <div id="turn" class="informer">Next Play: X</div>
-    <div id="mode">
-        <button id="vs">Player vs Player</button>
-        <button id="ai">Player vs Computer</button>
     </div>
+    
     <div id="players" class="informer">
-        <p>VS</p>
+        <p id="vstit">VS</p>
         <div id="player1" class="player">Player 1 <br>
-            <label for="name1">Name:</label> <br>
+            <label for="name1" id="score1">Wins: 0</label> <br>
             <input type="text" id="name1" name="name1"> <br>
             <button type="button">Enter</button>
         </div>
         <div id="player2" class="player">Player 2 <br>
-            <label for="name2">Name:</label> <br>
+            <label for="name2" id="score2">Wins: 0</label> <br>
             <input type="text" id="name2" name="name2"> <br>
             <button type="button">Enter</button>
         </div>
     </div>
+    <!-- <div id="mode">
+        <button id="vs">Player vs Player</button>
+        <button id="ai">Player vs Computer</button>
+    </div> -->
+    <div id="footer">Made by <a href="https://github.com/Quo210">Quo210</a></div>
     <script src="scripts.js"></script>
 </body>
 </html>

@@ -6,13 +6,14 @@ const boardModule = ( function() {
         [3,4,5],
         [6,7,8],
         [0,3,6],
-        [1,3,7],
+        [1,4,7],
         [2,5,8],
         [0,4,8],
         [2,4,6]
     ];
     let currentSymbol = '';
     let playsCounter = 0;
+    let roundfinished = false;
     
     function symbolSelection() {
         return (currentSymbol == 'X')?
@@ -59,10 +60,15 @@ const boardModule = ( function() {
         playsCounter = 0;
         counterHandler();
         currentSymbol = '';
+        turnInformer();
         grantDrawListeners()
     }
 
     function drawOnBoard() {
+        if (roundfinished === true) {
+            reset()
+            roundfinished = false;
+        }
         const x = symbolSelection();
         const that = this.firstChild;
         const index = obtainID(that)
@@ -76,7 +82,13 @@ const boardModule = ( function() {
 
         if(playsCounter >= 5) {
             look4Winner()
+        } 
+        
+        if (playsCounter >= 9) {
+            setTimeout(() => {
+                alert('Draw!'), reset()},200)
         }
+
     }
 
     function obtainID(that) {
@@ -102,6 +114,7 @@ const boardModule = ( function() {
         const myPads = currentDivs();
         myPads.forEach(element => {
             element.removeEventListener('click',drawOnBoard)
+            element.addEventListener('click',drawOnBoard)
         })
     }
 
@@ -114,10 +127,12 @@ const boardModule = ( function() {
                 let board = seeBoardArray();
                 winnerSymbol = board[array[0]];
                 setTimeout(() => {alert(`${winnerSymbol} is the winner!`)},200)
-                removeDrawListeners() 
-                return
+                removeDrawListeners()
+                playerModule.score(winnerSymbol)
+                roundfinished = true;
             } else { continue }
         }
+        
     }
 
     function exploreBoard(sequence){
@@ -162,6 +177,8 @@ const boardModule = ( function() {
 const playerModule = ( () => {
     let crossPlayer;
     let circlePlayer;
+    let xScore = 0;
+    let oScore = 0;
     
     function playerFactory(name,mark) {
         return {
@@ -176,11 +193,12 @@ const playerModule = ( () => {
         const parent = input.parentElement;
         let userName = input.value;
         let userMark;
+       
         
         let provisionalName = () => {
             return (crossPlayer === undefined)? 
-            'Cross Player':
-            'Circle Player';
+            '"X" Player':
+            '"O" Player';
         }
 
         if(userName == '') { userName = provisionalName()}
@@ -201,14 +219,60 @@ const playerModule = ( () => {
         newName.classList.add('username')
         newName.textContent = userName; 
         input.after(newName)
-        parent.removeChild(input);
+        parent.removeChild(newName.previousSibling)
+        parent.removeChild(newName.nextSibling);
+        parent.removeChild(newName.nextSibling)
+        parent.removeChild(newName.nextSibling)
+        parent.removeChild(newName.nextSibling)
 
         playerFactory(userName,userMark)
+        this.disabled = true;
+    }
+    
+    function scoreHandler(winner) {
+        const player1Score = document.querySelector('label#score1')
+        const player2Score = document.querySelector('label#score2')
+        
+        let assignResultNReturn = () => {
+            if (winner === 'X') {
+                xScore++
+                return xScore;
+            } else if (winner === 'O'){
+                oScore++
+                return oScore
+            }
+        }
+
+        let template = `Wins: ${assignResultNReturn()}`;
+
+        if (winner === 'X') {
+            player1Score.textContent = template;
+        } else if (winner === 'O') {
+            player2Score.textContent = template;
+        } else {
+
+        }
+
     }
 
+    function reset() {
+        if (xScore === 0 && oScore === 0) {
+            return
+        }
+        xScore = 0;
+        oScore = 0;
+        const player1Score = document.querySelector('label#score1')
+        const player2Score = document.querySelector('label#score2')
+        player1Score.textContent = 'Wins: 0';
+        player2Score.textContent = 'Wins: 0';
+        boardModule.reset()
+        alert('Scores reset!')
+    }
 
     return {
         add: createPlayer,
+        score: scoreHandler,
+        reset: reset,
     }
 
 })();
@@ -217,7 +281,7 @@ const buttonsModule = ( () => {
 
     function resetBTN() {
         const btn = document.querySelector('button#reset');
-        btn.addEventListener('click', boardModule.reset)
+        btn.addEventListener('click', playerModule.reset)
     }
 
     function createPlayersBTN() {

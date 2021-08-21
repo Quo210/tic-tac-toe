@@ -58,3 +58,13 @@ LOG_4 17/08/21 14:30PM
 - Deleted several functions in boardModule and playerModule that no longer serve a purpose
 - Created the logic and added the visual support to show number of rounds plays made, what is going to be the next symbol when clicked and a basic interface for Player1 and 2 with option for inputed name.
 - Added basic CSS to accomodate new elements while the project isn't ready.
+
+LOG_5 21/08/21 19:50PM
+NOTE: Dentists are evil and kill productivity. :(
+
+- Fixed some bugs on wincondition verification.
+- Added fixes for better interface on both Desktop and Phone.
+- Reset button reworked.
+- Removed 'Mode' buttons. Decided I won't do computer AI to play against.
+- Found amazing color scheme website called schemecolor.com <3
+- Reworked some code inside player and board module so they are more independant from each other.
