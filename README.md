@@ -68,3 +68,9 @@ NOTE: Dentists are evil and kill productivity. :(
 - Removed 'Mode' buttons. Decided I won't do computer AI to play against.
 - Found amazing color scheme website called schemecolor.com <3
 - Reworked some code inside player and board module so they are more independant from each other.
+
+LOG_6 28/8/21
+NOTE: Stuff came about IRL and took several days off study, I've decided to not pursuit the idea of learning the minimax algorithm now to make an AI for the game, it will be very time consuming and I don't think I'm ready for it just now.
+
+- Added a limit of 8 characters to the text input
+- Changed color scheme again to be blue and white. For now, I am very bad at choosing colors.
