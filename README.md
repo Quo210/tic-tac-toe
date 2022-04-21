@@ -1,7 +1,4 @@
 # tic-tac-toe
-A tic-tac-toe practice program for The Odin Project course. See Read Me file for more details.
-
-https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript/lessons/tic-tac-toe 
 
 Personal Notes:
 
